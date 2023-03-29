@@ -4,16 +4,19 @@ import InsertCommentIcon from "@mui/icons-material/InsertComment";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import "../css/Sidebar.css";
 import { Search } from "@mui/icons-material";
+//user profile
 import UserProfile from "./UserProfile";
 import db from "../firebase";
 import { IconButton } from "@mui/material";
+
 function Sidebar({ currentUser, signOut }) {
   const [allUsers, setAllUsers] = useState([]);
   const [searchInput, setSearchInput] = useState("");
   const [friendList, setFriendList] = useState([]);
+  // console.log(allUsers);
 
   //to perfrom background works
-
+  //run only one time
   useEffect(() => {
     const getAllUser = async () => {
       const data = await db.collection("users").onSnapshot((snapshot) => {
@@ -24,6 +27,7 @@ function Sidebar({ currentUser, signOut }) {
       });
     };
 
+    //get teh friends we have send the message
     const getFriend = async () => {
       const data = await db
         .collection("FriendList")
@@ -40,6 +44,7 @@ function Sidebar({ currentUser, signOut }) {
   }, []);
   // console.log(allUsers);
 
+  //search the user
   const searchUSer = allUsers.filter((user) => {
     if (searchInput) {
       if (
@@ -64,7 +69,7 @@ function Sidebar({ currentUser, signOut }) {
   return (
     <div className="sidebar">
       <div className="sidebar-header">
-      <div className="sidebar-header-img" onClick={signOut}>
+        <div className="sidebar-header-img" onClick={signOut}>
           <img src={currentUser?.photoURL} alt="" />
         </div>
         <div className="sidebar-header-btn">

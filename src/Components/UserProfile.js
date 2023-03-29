@@ -2,8 +2,11 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 import "../css/UserProfile.css";
+
+
 function UserProfile({ name, photoURL, email, lastMessage }) {
   const navigate = useNavigate();
+  //when click got to that user
   const goToUser = (emailId) => {
     if (emailId) {
       navigate(`/${emailId}`);

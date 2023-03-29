@@ -10,6 +10,8 @@ function Login({ setUser }) {
     auth
       .signInWithPopup(googleProvider)
       .then((result) => {
+        //result will be an object with lot of properties including user
+        // console.log(result);
         const newUser = {
           fullname: result.user.displayName,
           email: result.user.email,
@@ -17,7 +19,9 @@ function Login({ setUser }) {
         };
         navigate("/");
         setUser(newUser);
+        //set the data top the local storage
         localStorage.setItem("user", JSON.stringify(newUser));
+        //the user collection >  doc with mail id >  data on int of new users
         db.collection("users").doc(result.user.email).set(newUser);
       })
 

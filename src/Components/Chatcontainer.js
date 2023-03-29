@@ -4,12 +4,15 @@ import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
 import SendIcon from "@mui/icons-material/Send";
 import "../css/Chatcontainer.css";
+// chat message
 import ChatMessage from "./ChatMessage";
 import Picker from "emoji-picker-react";
 import { useParams } from "react-router-dom";
 import db from "../firebase";
 import firebase from "firebase";
 import { IconButton } from "@mui/material";
+
+
 function Chatcontainer({ currentUser }) {
   const [message, setMessage] = useState("");
   const [openEmojiBox, setOpenEmojiBox] = useState(false);
@@ -18,6 +21,7 @@ function Chatcontainer({ currentUser }) {
   const chatBox = useRef(null);
   const [chatMessages, setChatMessages] = useState([]);
   useEffect(() => {
+    // get all users from collection users
     const getUser = async () => {
       const data = await db
         .collection("users")
@@ -27,6 +31,7 @@ function Chatcontainer({ currentUser }) {
         });
     };
 
+    // get the messages of the user
     const getMessages = async () => {
       const data = await db
         .collection("chats")
@@ -35,7 +40,6 @@ function Chatcontainer({ currentUser }) {
         .orderBy("timeStamp", "asc")
         .onSnapshot((snapshot) => {
           let messages = snapshot.docs.map((doc) => doc.data());
-
           let newMessage = messages.filter(
             (message) =>
               message.senderEmail === (currentUser.email || emailID) ||
@@ -69,6 +73,7 @@ function Chatcontainer({ currentUser }) {
         receiverEmail: emailID,
         timeStamp: firebase.firestore.Timestamp.now(),
       };
+
       // sender
       db.collection("chats")
         .doc(currentUser.email)
@@ -78,6 +83,7 @@ function Chatcontainer({ currentUser }) {
       // reciever
       db.collection("chats").doc(emailID).collection("messages").add(payload);
 
+      //friend list
       db.collection("FriendList")
         .doc(currentUser.email)
         .collection("list")
@@ -135,13 +141,13 @@ function Chatcontainer({ currentUser }) {
 
       <div className="chat-input">
         {/* buttons */}
-        {openEmojiBox && (
+        {/* {openEmojiBox && (
           <Picker
             onEmojiClick={(event, emojiObject) =>
               setMessage(message + event.emoji)
-            }
-          />
-        )}
+            } */}
+          {/* />
+        )} */}
 
         <div className="chat-input-btn">
           <IconButton>
